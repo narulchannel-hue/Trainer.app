@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Тренировки</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Тренировки">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="theme-color" content="#0A0A0B">
+
+<style>
+:root{--bg:#0A0A0B;--c1:#1E1E21;--c2:#141416;--ink:#F4F4F5;--mute:#8E8E96;--y:#FACC15;--y2:#F5B800;--line:rgba(255,255,255,.07);color-scheme:dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;color:var(--ink);font:600 15px/1.4 "Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(520px 320px at 8% -4%,rgba(250,204,21,.2),transparent 65%),radial-gradient(420px 300px at 105% 30%,rgba(250,204,21,.07),transparent 70%),var(--bg);min-height:100vh}
+main{max-width:520px;margin:0 auto;padding:18px 16px 48px}
+button{font:inherit;color:inherit;border:0;cursor:pointer;transition:transform .15s,background .2s,opacity .2s}
+button:active{transform:scale(.93)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--y);outline-offset:2px}
+.top{display:flex;align-items:center;gap:14px}
+.top .tx{flex:1}
+.top h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em}
+.top p{margin:2px 0 0;color:var(--mute);font-size:14px}
+.ring{position:relative;width:62px;height:62px}
+.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:6;stroke-linecap:round}
+.ring .bg{stroke:rgba(255,255,255,.08)}
+.ring .fg{stroke:var(--y);transition:stroke-dashoffset .6s cubic-bezier(.2,.8,.2,1)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:14px;font-weight:800}
+.wkn{display:flex;align-items:center;gap:8px;margin:16px 0 10px}
+.wkn span{flex:1;color:var(--mute);font-size:14px}
+.nv{width:36px;height:36px;border-radius:12px;background:linear-gradient(160deg,var(--c1),var(--c2));border:1px solid var(--line);font-size:18px}
+.stats{display:grid;grid-template-columns:1.2fr 1fr;gap:10px;margin-bottom:14px}
+.st{border-radius:22px;padding:14px 16px;background:linear-gradient(160deg,var(--c1),var(--c2));border:1px solid var(--line);min-height:96px;display:flex;flex-direction:column;justify-content:space-between}
+.st.y{background:linear-gradient(145deg,#FFE066,var(--y2));color:#171200;border:0;box-shadow:0 10px 30px -10px rgba(250,204,21,.55)}
+.st small{font-size:13px;opacity:.75}
+.st b{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.st b i{font-style:normal;font-size:16px;opacity:.55;font-weight:700}
+.strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px}
+.dy{border-radius:18px;padding:9px 0 8px;background:linear-gradient(160deg,var(--c1),var(--c2));border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:3px}
+.dy small{color:var(--mute);font-size:12px}
+.dy b{font-size:17px;font-weight:800}
+.dy .dt{width:6px;height:6px;border-radius:50%;background:transparent}
+.dy.w .dt{background:rgba(250,204,21,.45)}
+.dy.dn .dt{background:var(--y)}
+.dy.td{border-color:rgba(250,204,21,.6)}
+.dy.sel{background:linear-gradient(145deg,#FFE066,var(--y2));color:#171200;border-color:transparent;box-shadow:0 8px 22px -8px rgba(250,204,21,.6)}
+.dy.sel small{color:#171200;opacity:.7}
+.dy.sel .dt{background:#171200}
+.ph{display:flex;align-items:baseline;gap:10px;margin:4px 2px 10px}
+.ph h2{margin:0;font-size:21px;font-weight:800}
+.ph span{color:var(--mute);font-size:13px}
+.ex{border-radius:22px;padding:14px 16px;margin-bottom:10px;background:linear-gradient(160deg,var(--c1),var(--c2));border:1px solid var(--line);transition:border-color .3s,box-shadow .3s;animation:in .35s both}
+.ex.done{border-color:rgba(250,204,21,.55);box-shadow:0 0 0 1px rgba(250,204,21,.15),0 12px 30px -14px rgba(250,204,21,.45)}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.eh{display:flex;align-items:center;gap:10px}
+.eh div{flex:1}
+.eh h3{margin:0;font-size:17px;font-weight:700;line-height:1.25}
+.eh .t{color:var(--mute);font-size:13px}
+.cnt{font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.07)}
+.ex.done .cnt{background:var(--y);color:#171200}
+.sets{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.set{width:50px;height:50px;border-radius:16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);font-size:18px;font-weight:800;color:var(--mute);position:relative;overflow:hidden}
+.set.on{background:linear-gradient(145deg,#FFE066,var(--y2));border-color:transparent;color:#171200}
+.set.pop{animation:pop .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+.hb{margin-top:6px;background:none;color:var(--y);font-size:14px;font-weight:700;padding:6px 0;display:flex;align-items:center;gap:6px}
+.hb i{font-style:normal;display:inline-block;transition:transform .25s}
+.ex.open .hb i{transform:rotate(180deg)}
+.more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.ex.open .more{grid-template-rows:1fr}
+.more>div{overflow:hidden}
+.how{margin:4px 0 10px;padding:0;list-style:none;display:grid;gap:7px}
+.how li{position:relative;padding-left:22px;color:#C9C9CF;font-size:14px;font-weight:500}
+.how li::before{content:"";position:absolute;left:4px;top:7px;width:8px;height:8px;border-radius:3px;background:var(--y)}
+.more input{width:100%;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font:500 14px "Manrope",system-ui,sans-serif;margin-bottom:4px}
+.rest{border-radius:22px;padding:22px 18px;background:linear-gradient(160deg,var(--c1),var(--c2));border:1px solid var(--line);text-align:center;animation:in .35s both}
+.rest b{font-size:20px;font-weight:800;display:block;margin-bottom:6px}
+.rest p{margin:0;color:var(--mute);font-weight:500}
+.hm{border-radius:22px;padding:14px 16px;margin-top:14px;background:linear-gradient(160deg,var(--c1),var(--c2));border:1px solid var(--line)}
+.hm h4{margin:0 0 10px;font-size:15px;font-weight:700}
+.hg{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);grid-template-columns:repeat(10,1fr);gap:4px}
+.hg i{aspect-ratio:1;border-radius:5px;background:rgba(250,204,21,.05)}
+.hg i.w{background:rgba(250,204,21,.12)}
+.hg i.p{background:rgba(250,204,21,.45)}
+.hg i.f{background:var(--y)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);background:linear-gradient(145deg,#FFE066,var(--y2));color:#171200;font-weight:800;padding:13px 22px;border-radius:30px;box-shadow:0 14px 34px -8px rgba(250,204,21,.6);transition:transform .45s cubic-bezier(.2,1.4,.4,1);z-index:9;white-space:nowrap}
+.toast.show{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<div class="top"><div class="tx"><h1 id="hd"></h1><p id="hs"></p></div><div class="ring"><svg width="62" height="62" viewBox="0 0 62 62"><circle class="bg" cx="31" cy="31" r="26"/><circle class="fg" id="rg" cx="31" cy="31" r="26" stroke-dasharray="163.4" stroke-dashoffset="163.4"/></svg><b id="rp">0%</b></div></div>
+<div class="wkn"><button class="nv" id="prev" aria-label="Предыдущая неделя">‹</button><span id="wk"></span><button class="nv" id="next" aria-label="Следующая неделя">›</button></div>
+<div class="stats" id="stats"></div>
+<div class="strip" id="strip"></div>
+<div id="panel"></div>
+<div class="hm"><h4>Последние 10 недель</h4><div class="hg" id="hg"></div></div>
+</main>
+<div class="toast" id="toast">Тренировка выполнена 💪</div>
+<script>
+var DAYS=[
+{name:"Жим",sub:"Грудь, плечи, трицепс · дома",ex:[
+["Отжимания на брусьях",4,"до отказа минус 1–2",["Обопритесь на прямые руки, слегка наклонитесь вперёд.","Опускайтесь, пока угол в локтях не станет около 90°.","Выжимайтесь вверх без раскачки."]],
+["Жим гантелей лёжа на полу",3,"12–15",["Лягте, колени согнуты, гантели над грудью.","Локти под углом 45° к корпусу, не разводите их в стороны.","Опускайте до касания пола локтями, выжимайте вверх."]],
+["Жим гантелей стоя",3,"10–12",["Ноги на ширине плеч, пресс и ягодицы напряжены.","Выжимайте гантели вверх, не прогибая поясницу.","Опускайте к плечам медленно."]],
+["Разводка гантелей лёжа",3,"15",["Руки чуть согнуты и остаются согнутыми всё движение.","Разводите дугой до растяжения груди, локти не ниже плеч.","Сводите, как будто обнимаете бочку."]]]},
+{name:"Ноги",sub:"Ноги и ягодицы · дома",ex:[
+["Болгарские выпады",4,"10–12 на ногу",["Задняя нога на опоре (диван, стул).","Опускайтесь вертикально вниз, колено над стопой.","Вставайте за счёт пятки передней ноги."]],
+["Румынская тяга на одной ноге",3,"12 на ногу",["Спина прямая, колено опорной ноги чуть согнуто.","Наклоняйтесь вперёд, отводя другую ногу назад.","Гантель скользит вдоль ноги. Возвращайтесь, сжимая ягодицу."]],
+["Приседания с гантелью",3,"15",["Гантель у груди двумя руками.","Таз назад и вниз, колени идут по направлению носков.","Пятки на полу, поднимайтесь без остановки."]],
+["Подъёмы на носки",3,"20",["Встаньте носками на ступеньку или книгу.","Поднимайтесь максимально высоко, задержка 1 секунда.","Опускайтесь медленно ниже уровня опоры."]]]},
+{name:"Тяга",sub:"Спина и бицепс · турник во дворе",ex:[
+["Подтягивания",4,"4–5, оставьте 1–2 в запасе",["Хват чуть шире плеч, плечи вниз и назад.","Тянитесь грудью к перекладине, подбородок выше неё.","Опускайтесь 2–3 секунды до полного виса, без раскачки."]],
+["Подтягивания другим хватом",3,"4–6",["Меняйте хват: обратный, нейтральный, узкий.","Техника та же. Обратный хват сильнее нагружает бицепс.","Не бросайте тело вниз, контролируйте спуск."]],
+["Тяга гантели в наклоне",3,"12 на руку",["Обопритесь рукой и коленом, спина параллельна полу.","Тяните гантель к поясу, локоть идёт назад вдоль корпуса.","Сведите лопатку, задержка 1 секунда, медленно вниз."]],
+["Сгибания на бицепс",3,"12",["Локти прижаты к корпусу и не двигаются.","Сгибайте руки без раскачки корпуса.","Опускайте гантели 3 секунды."]],
+["Подъёмы ног в висе",3,"до отказа",["Повисите на турнике, плечи вниз.","Поднимайте ноги до горизонтали, слегка подкручивая таз.","Опускайте плавно, без раскачки."]]]},
+{name:"Ноги и пресс",sub:"Лёгкие ноги, плечи, пресс",ex:[
+["Выпады назад",3,"12 на ногу",["Шагните назад и опуститесь, колено почти касается пола.","Корпус прямой, вес на передней ноге.","Вставайте на пятке передней ноги."]],
+["Ягодичный мост с гантелью",3,"15",["Лёжа на спине, гантель на тазу, стопы у ягодиц.","Поднимайте таз, сжимая ягодицы, наверху пауза 1 секунда.","Поясницу не прогибайте."]],
+["Задние дельты с гантелями",3,"15",["Наклонитесь вперёд, спина прямая.","Разводите гантели в стороны до уровня спины, локти чуть согнуты.","Двигаются плечи, а не корпус."]],
+["Подтягивания обратным хватом",3,"4–6",["Ладони к себе, хват на ширине плеч.","Тяните локти вниз к рёбрам, подбородок выше перекладины.","Опускайтесь медленно."]],
+["L-sit на брусьях",4,"сколько сможете",["Обопритесь на прямые руки, плечи вниз, не сутультесь.","Поднимите прямые ноги параллельно полу и держите.","Тяжело? Сгибайте колени."]]]}
+];
+var SCH=[0,1,null,2,null,3,null],WD=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+var K="fit-v1",S={checks:{},notes:{}};
+try{var raw=localStorage.getItem(K);if(raw){S=JSON.parse(raw)||S}}catch(e){}
+S.checks=S.checks||{};S.notes=S.notes||{};
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
+var off=0,sel=(new Date().getDay()+6)%7,todayI=sel;
+function monday(o){var x=new Date();x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7)+o*7);return x}
+function key(m){return m.getFullYear()+"-"+(m.getMonth()+1)+"-"+m.getDate()}
+function fmt(d){return d.toLocaleDateString("ru",{day:"numeric",month:"short"})}
+function cnt(o,di){var c=S.checks[key(monday(o))]||{},t=0,q=0;DAYS[di].ex.forEach(function(x,xi){t+=x[1];var a=c[di+"-"+xi]||[];for(var i=0;i<x[1];i++){if(a[i])q++}});return{t:t,q:q}}
+function $(i){return document.getElementById(i)}
+function renderTop(){
+var m=monday(off),e=new Date(m);e.setDate(e.getDate()+6);var T=0,Q=0,W=0;
+for(var di=0;di<4;di++){var c=cnt(off,di);T+=c.t;Q+=c.q;if(c.q===c.t)W++}
+var p=T?Math.round(Q/T*100):0;
+$("rg").style.strokeDashoffset=163.4*(1-p/100);$("rp").textContent=p+"%";
+$("hd").textContent=off===0?"Сегодня, "+fmt(new Date()):"Неделя";
+var di0=SCH[sel];$("hs").textContent=di0===null?"День отдыха":"Тренировка: "+DAYS[di0].name;
+$("wk").textContent=(off===0?"Эта неделя · ":off===-1?"Прошлая · ":off===1?"Следующая · ":"")+fmt(m)+" – "+fmt(e);
+$("stats").innerHTML='<div class="st y"><small>Подходов за неделю</small><b>'+Q+' <i>/ '+T+'</i></b></div><div class="st"><small>Тренировок готово</small><b>'+W+' <i>/ 4</i></b></div>';
+var s="";
+for(var d=0;d<7;d++){var dt=new Date(m);dt.setDate(dt.getDate()+d);var di=SCH[d],cl="dy";
+if(di!==null){cl+=" w";var c2=cnt(off,di);if(c2.q===c2.t)cl+=" dn"}
+if(d===sel)cl+=" sel";if(off===0&&d===todayI)cl+=" td";
+s+='<button class="'+cl+'" data-d="'+d+'" aria-pressed="'+(d===sel)+'"><small>'+WD[d]+"</small><b>"+dt.getDate()+'</b><span class="dt"></span></button>'}
+$("strip").innerHTML=s;
+var h="";
+for(var w=-9;w<=0;w++){for(var d2=0;d2<7;d2++){var di2=SCH[d2],k="";if(di2!==null){var c3=cnt(off+w,di2);k=c3.q===0?"w":c3.q<c3.t?"p":"f"}h+="<i"+(k?' class="'+k+'"':"")+"></i>"}}
+$("hg").innerHTML=h}
+function panel(){
+var di=SCH[sel],o=$("panel");
+if(di===null){o.innerHTML='<div class="rest"><b>День отдыха</b><p>Мышцы растут во время восстановления. Сон 7–8 часов, белок, 8–10 тысяч шагов и лёгкая растяжка.</p></div>';return}
+var d=DAYS[di],c=S.checks[key(monday(off))]||{},n=S.notes[key(monday(off))]||{};
+var h='<div class="ph"><h2>'+d.name+"</h2><span>"+d.sub+"</span></div>";
+d.ex.forEach(function(x,xi){var id=di+"-"+xi,a=c[id]||[],q=0,b="";
+for(var i=0;i<x[1];i++){if(a[i])q++;b+='<button class="set'+(a[i]?" on":"")+'" data-e="'+id+'" data-i="'+i+'" aria-pressed="'+!!a[i]+'" aria-label="Подход '+(i+1)+'">'+(a[i]?"✓":i+1)+"</button>"}
+var li=x[3].map(function(z){return"<li>"+z+"</li>"}).join("");
+h+='<div class="ex'+(q===x[1]?" done":"")+'" id="ex-'+id+'" style="animation-delay:'+xi*50+'ms"><div class="eh"><div><h3>'+x[0]+'</h3><span class="t">'+x[1]+" × "+x[2]+'</span></div><span class="cnt">'+q+"/"+x[1]+'</span></div><div class="sets">'+b+'</div><button class="hb">Как делать <i>⌄</i></button><div class="more"><div><ul class="how">'+li+'</ul><input type="text" data-n="'+id+'" placeholder="Вес и повторения" value="'+esc(n[id]||"")+'"></div></div></div>'});
+o.innerHTML=h}
+var tt;
+function toast(){var t=$("toast");t.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("show")},2600)}
+document.addEventListener("click",function(ev){
+var t=ev.target.closest("button");if(!t)return;
+if(t.id==="prev"){off--;render();return}
+if(t.id==="next"){off++;render();return}
+if(t.classList.contains("dy")){sel=+t.dataset.d;renderTop();panel();return}
+if(t.classList.contains("hb")){t.closest(".ex").classList.toggle("open");return}
+if(t.classList.contains("set")){
+var k=key(monday(off)),id=t.dataset.e,i=+t.dataset.i,di=+id.split("-")[0];
+S.checks[k]=S.checks[k]||{};var a=S.checks[k][id]=S.checks[k][id]||[];a[i]=!a[i];save();
+t.classList.toggle("on",!!a[i]);t.textContent=a[i]?"✓":i+1;t.setAttribute("aria-pressed",!!a[i]);
+t.classList.remove("pop");void t.offsetWidth;if(a[i])t.classList.add("pop");
+try{if(a[i]&&navigator.vibrate)navigator.vibrate(12)}catch(e){}
+var card=$("ex-"+id),tot=DAYS[di].ex[+id.split("-")[1]][1],q=0;
+for(var j=0;j<tot;j++){if(a[j])q++}
+card.querySelector(".cnt").textContent=q+"/"+tot;card.classList.toggle("done",q===tot);
+renderTop();var c=cnt(off,di);if(a[i]&&c.q===c.t)toast()}});
+document.addEventListener("change",function(ev){var t=ev.target;if(t.dataset&&t.dataset.n){var k=key(monday(off));S.notes[k]=S.notes[k]||{};S.notes[k][t.dataset.n]=t.value;save()}});
+function render(){renderTop();panel()}
+render();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
+</script>
+</body>
+</html>
